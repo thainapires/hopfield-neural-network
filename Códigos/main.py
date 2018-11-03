@@ -5,11 +5,6 @@ from neupy import plots
 import matplotlib.pyplot as plt
 from padroes import *
 from comparacao import *
-import scipy.misc
-import PIL as pil
-from PIL import Image
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
 #Padroes de 0 a 9 estao no arquivo chamado padroes, que é importado
 numeros = np.concatenate([zero, one, two, three, four, five, six, seven, eight, nine], axis=0)
