@@ -6,45 +6,49 @@ import matplotlib.pyplot as plt
 from padroes import *
 import random
 
-def create_half_patterns(dhnet,numberarr, percentage, num_testes):
-    error_percentagem_test = []
-    error_accuracy_test = []
-    error_total = []
-    numbererrorarr = np.copy(numberarr) 
+def criar_ruidos(redeHopfield, number, percentagem, num_testes):
+    erro_percentagem = []
+    erro_precisao = []
+    erro_total = []
+    numero_ruido = np.copy(number) 
+
     for k in range(0, int(num_testes)):
-        num_errors = 120 * (int(percentage))/100
+        
+        num_errors = 120 * (int(percentagem))/100
         random_index_erros = []
-        #print (num_errors)
+
+
         for i in range(0,int(num_errors)):
-            random_num = random.randint(1, 120)
-            if random_num in random_index_erros:
-                random_index_erros.append(random_num+random.randint(1,120))
+            numero_aleat = random.randint(1, 120)
+            if numero_aleat in random_index_erros:
+                random_index_erros.append(numero_aleat+random.randint(1,120))
             else:
-                random_index_erros.append(random_num)
-        #print (random_index_erros)
+                random_index_erros.append(numero_aleat)
+
         for i in range(0, 120):
             if i in random_index_erros:
-                if numbererrorarr.item(i) == 0:
-                    np.put(numbererrorarr, [i], [1])
+                if numero_ruido.item(i) == 0:
+                    np.put(numero_ruido, [i], [1])
                 else:
-                    np.put(numbererrorarr, [i], [0])
+                    np.put(numero_ruido, [i], [0])
         
-        result = dhnet.predict(numbererrorarr)  
-        dif = diferencapadroes(numberarr, result)
-        dif2 = diferencahamming(numberarr, result)
-        error_percentagem_test.append(round(dif,2))
-        if(dif2 == True):
-            error_accuracy_test.append(1)
+        result = redeHopfield.predict(numero_ruido)  
+        diferenca = diferenca_padroes(number, result)
+        acerto_ou_erro = diferenca_hamming(number, result)
+        erro_percentagem.append(round(diferenca,2))
+        if(acerto_ou_erro == True):
+            erro_precisao.append(1)
         else:
-            error_accuracy_test.append(0)
+            erro_precisao.append(0)
+
         '''
         print("----------------------------------")
-        print(desenhar_padrao(numberarr.reshape(12,10)))
+        print(desenhar_padrao(number.reshape(12,10)))
         print("----------------------------------")
 
 
         print("----------------------------------")   
-        print(desenhar_padrao(numbererrorarr.reshape(12,10)))
+        print(desenhar_padrao(numero_ruido.reshape(12,10)))
         print("----------------------------------")
 
         print("----------------------------------")   
@@ -52,35 +56,35 @@ def create_half_patterns(dhnet,numberarr, percentage, num_testes):
         print("----------------------------------")
         '''
        
-    error_total.append(error_percentagem_test)
-    error_total.append(error_accuracy_test)
-    return error_total
+    erro_total.append(erro_percentagem)
+    erro_total.append(erro_precisao)
+    
+    return erro_total
 
 
-def desenhar_padrao(image_matrix):
-    for row in image_matrix.tolist():
+def desenhar_padrao(matrix_imagem):
+    for row in matrix_imagem.tolist():
         print('| ' + ' '.join(' #'[val] for val in row))
     
 
-def diferencapadroes(numero, resultado):
+def diferenca_padroes(numero, resultado):
     diferente = 0
     for i in range (0, 120):
         if numero.item(i)==resultado.item(i):
             continue
         else:
             diferente = diferente+1
-
     return diferente/120
 
 
-def diferencahamming(numero, resultado):
-    igual = 0
+def diferenca_hamming(numero, resultado):
+    bit_igual = 0
     for i in range (0, 120):
         if numero.item(i)==resultado.item(i):
-            igual = igual+1
+            bit_igual = bit_igual+1
         else:
             continue
-    if(igual == 120):
+    if(bit_igual == 120):
         return True
     else:
         return False

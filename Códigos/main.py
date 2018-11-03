@@ -19,7 +19,7 @@ redeHopfield = algorithms.DiscreteHopfieldNetwork(mode='sync')
 redeHopfield.train(numeros)
 
 #Função que retorna um array de arrays
-erro = create_half_patterns(redeHopfield, seven, 5, 5)
+erro = criar_ruidos(redeHopfield, seven, 5, 5)
 
 #A primeira posição do array representa as porcentagens de erro em relação
 #a quantidade de bits diferentes entre o padrão esperado e o padrão encontrado pela rede
